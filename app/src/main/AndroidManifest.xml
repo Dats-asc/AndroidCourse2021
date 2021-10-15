@@ -10,10 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidCourseHW">
         <activity
+            android:name=".SecondActivity"
+            android:exported="true"
+            android:label="@string/title_activity_second"
+            android:theme="@style/Theme.AndroidCourseHW.NoActionBar" >
+
+            <intent-filter android:scheme="http">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.SEND"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
