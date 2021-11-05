@@ -10,6 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidCourseHW">
         <activity
+            android:name=".CityActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CitiActivity"
+            android:exported="true"
+            android:label="@string/title_activity_citi"
+            android:theme="@style/Theme.AndroidCourseHW.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
