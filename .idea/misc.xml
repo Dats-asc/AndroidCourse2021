@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1287037037037037" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/ic_channel_background.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/layout/activity_btm_nav.xml" value="0.29583333333333334" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/city_dialog_window.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/fragment_city_cv.xml" value="0.3" />
+        <entry key="app/src/main/res/layout/fragment_city_cw.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_city_list.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_dash_board.xml" value="0.20925925925925926" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_view_pager.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/image.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/item_city.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/item_cv_city.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/item_vp_photo.xml" value="0.2953125" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.356921697991377" />
+        <entry key="app/src/main/res/menu/btm_nav_main_menu.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_channel.xml" value="0.21614583333333334" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
