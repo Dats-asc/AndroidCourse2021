@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcoursehw.databinding.FragmentPlaylistBinding
 
+public val SONG_ID = "SONG_ID"
+
 class PlaylistFragment : Fragment() {
 
     private lateinit var binding: FragmentPlaylistBinding
@@ -37,7 +39,7 @@ class PlaylistFragment : Fragment() {
                     activity,
                     PlayerActivity::class.java
                 ).apply {
-                    putExtra("ID", it)
+                    putExtra(SONG_ID, it)
                 }
             )
         }

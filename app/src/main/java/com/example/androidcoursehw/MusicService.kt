@@ -6,7 +6,10 @@ import android.content.Intent
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
+import android.os.Message
+import android.widget.SeekBar
 import kotlin.random.Random
 
 class MusicService : Service() {
@@ -14,6 +17,8 @@ class MusicService : Service() {
     private var mediaPlayer: MediaPlayer = MediaPlayer()
 
     private var currentSong: Song? = null
+
+    private var seekBar: SeekBar? = null
 
     inner class LocaleBinder : Binder() {
 
@@ -25,6 +30,12 @@ class MusicService : Service() {
             currentSong = song
             this@MusicService.setSong()
         }
+
+        fun setSeekBar(view: SeekBar){
+             seekBar = view
+        }
+
+        fun getMediaPlayer(): MediaPlayer = mediaPlayer
 
         fun stop() = this@MusicService.stop()
     }
