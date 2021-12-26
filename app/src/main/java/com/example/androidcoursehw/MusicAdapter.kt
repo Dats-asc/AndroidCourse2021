@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class MusicAdapter (
-    private val cities: List<Music>,
+    private val songs: List<Song>,
     private val action: (Int) -> Unit
 ) : RecyclerView.Adapter<MusicHolder>() {
 
@@ -14,8 +14,8 @@ class MusicAdapter (
     ): MusicHolder = MusicHolder.create(parent, action)
 
     override fun onBindViewHolder(holder: MusicHolder, position: Int) {
-        holder.bind(cities[position])
+        holder.bind(songs[position])
     }
 
-    override fun getItemCount(): Int = cities.size
+    override fun getItemCount(): Int = songs.size
 }

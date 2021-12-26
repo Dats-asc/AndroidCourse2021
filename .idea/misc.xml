@@ -3,7 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1734375" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/background_gradient.xml" value="0.23981481481481481" />
+        <entry key="app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/ic_baseline_skip_next_24.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/ic_baseline_skip_previous_24.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/seekbar_style.xml" value="0.19537037037037036" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/activity_player.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/fragment_playlist.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/item_city.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/item_song.xml" value="0.2953125" />
       </map>
     </option>
   </component>
@@ -12,5 +26,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.30512820512820515" />
+      </ProjectState>
+    </option>
   </component>
 </project>

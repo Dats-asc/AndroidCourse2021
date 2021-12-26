@@ -16,13 +16,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         controller = findController(R.id.nav_host_fragment_container)
-
-        controller.apply {
-
-        }
-
-        var newObj = Fragment().apply {
-
-        }
     }
 }
