@@ -18,6 +18,7 @@
         <entry key="app/src/main/res/layout/fragment_playlist.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/item_city.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/item_song.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/notification_song.xml" value="0.2953125" />
       </map>
     </option>
   </component>
