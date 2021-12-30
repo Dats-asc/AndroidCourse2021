@@ -13,5 +13,9 @@ data class Task(
     @ColumnInfo(name = "description")
     var description: String?,
     @ColumnInfo(name = "date")
-    var date: String
+    var date: String,
+    @ColumnInfo(name = "latitude")
+    var latitude: Double?,
+    @ColumnInfo(name = "longitude")
+    var longitude: Double?
 )

@@ -69,7 +69,7 @@ class TaskDetailFragment : Fragment() {
                 val description = etTaskDescription.text.toString()
                 val date = etDate.text.toString()
                 if (!name.isNullOrEmpty() && !date.isNullOrEmpty()) {
-                    var newTasks = Task(currentTask?.id ?: 0, name, description, date)
+                    var newTasks = Task(currentTask?.id ?: 0, name, description, date, currentTask?.latitude, currentTask?.longitude)
                     Thread {
                         db.taskDao().updateTask(newTasks)
                     }.start()

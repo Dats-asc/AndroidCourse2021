@@ -21,7 +21,7 @@
             android:id="@+id/et_task_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"/>
+            android:enabled="false" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,8 +57,8 @@
             android:id="@+id/et_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="false"
-            android:enabled="false" />
+            android:enabled="false"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -81,14 +81,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_edit" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
