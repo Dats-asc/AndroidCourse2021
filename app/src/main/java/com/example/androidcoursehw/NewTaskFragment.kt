@@ -29,8 +29,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_new_task.*
 import kotlinx.android.synthetic.main.item_task.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.jar.Manifest
@@ -53,6 +51,7 @@ import android.location.Geocoder
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.*
 
 
 class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
@@ -64,6 +63,8 @@ class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
     private lateinit var navController: NavController
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private var scope = CoroutineScope(Job() + Dispatchers.IO)
 
 
     private val locationPermissionLauncher =
@@ -97,7 +98,8 @@ class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED){
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
             requestLocationAccess()
         }
 
@@ -109,7 +111,7 @@ class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
                 var location = getLastKnownLocation()
                 if (!name.isNullOrEmpty() && !date.isNullOrEmpty()) {
                     var tasks: ArrayList<Task> = arrayListOf()
-                    Thread {
+                    scope.launch {
                         tasks.addAll(db.taskDao().getTaks())
                         var idLast = 0
                         tasks.lastOrNull()?.let {
@@ -117,8 +119,17 @@ class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
                         }
                         if (idLast != 0)
                             idLast += 1
-                        db.taskDao().addTask(Task(idLast, name, description, date, location?.first, location?.second))
-                    }.start()
+                        db.taskDao().addTask(
+                            Task(
+                                idLast,
+                                name,
+                                description,
+                                date,
+                                location?.first,
+                                location?.second
+                            )
+                        )
+                    }
                     Log.e("result", location?.first.toString())
                     Thread.sleep(100)
                     navController.popBackStack()
@@ -149,10 +160,10 @@ class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
     }
 
     @SuppressLint("MissingPermission")
-    fun getLastKnownLocation() : Pair<Double, Double>? {
+    fun getLastKnownLocation(): Pair<Double, Double>? {
         var result: Pair<Double, Double>? = null
         fusedLocationClient.lastLocation
-            .addOnSuccessListener { location->
+            .addOnSuccessListener { location ->
                 if (location != null) {
                     val latitude = location.latitude
                     val longitude = location.longitude

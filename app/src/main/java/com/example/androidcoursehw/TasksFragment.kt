@@ -21,6 +21,7 @@ import com.example.androidcoursehw.databinding.FragmentTasksBinding
 import com.example.androidcoursehw.model.AppDatabase
 import com.example.androidcoursehw.model.entity.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.*
 import org.w3c.dom.Text
 import java.util.jar.Attributes
 
@@ -40,17 +41,19 @@ class TasksFragment : Fragment() {
 
     private var databaseEmpty: Boolean = false
 
+    private var scope = CoroutineScope(Job() + Dispatchers.IO)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         navController = findNavController()
 
         db = AppDatabase(requireContext())
-        Thread {
+        scope.launch {
             if (db.taskDao().getTaks().isEmpty()) {
                 databaseEmpty = true
             }
-        }.start()
+        }
     }
 
     override fun onCreateView(
@@ -68,9 +71,9 @@ class TasksFragment : Fragment() {
         tvFirstMessage = view.findViewById<TextView>(R.id.tvFirstMessage)
 
         var tasks: ArrayList<Task> = arrayListOf()
-        Thread {
+        scope.launch {
             tasks.addAll(db.taskDao().getTaks())
-        }.start()
+        }
         Thread.sleep(20)
         taskAdapter = TaskAdapter(
             tasks,
@@ -115,11 +118,11 @@ class TasksFragment : Fragment() {
             binding.tvFirstMessage.visibility = View.VISIBLE
         }
         taskAdapter?.updateData(newList)
-        Thread {
+        scope.launch {
             taskForRemove?.let {
                 db.taskDao().removeTask(it)
             }
-        }.start()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -139,9 +142,9 @@ class TasksFragment : Fragment() {
                 taskAdapter?.updateData(arrayListOf())
                 binding.tvFirstMessage.visibility = View.VISIBLE
 
-                Thread {
+                scope.launch {
                     db.taskDao().clear()
-                }.start()
+                }
             }
             .show()
     }
@@ -152,5 +155,11 @@ class TasksFragment : Fragment() {
             putInt("TASK_ID", taskId)
         }
         navController.navigate(R.id.action_tasksFragment_to_taskDetailFragment, bundle)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        scope.cancel()
     }
 }

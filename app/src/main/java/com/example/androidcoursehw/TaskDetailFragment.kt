@@ -12,6 +12,10 @@ import com.example.androidcoursehw.model.AppDatabase
 import com.example.androidcoursehw.model.entity.Task
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -25,6 +29,8 @@ class TaskDetailFragment : Fragment() {
     private lateinit var db: AppDatabase
 
     private var currentTask: Task? = null
+
+    private var scope = CoroutineScope(Job() + Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +55,9 @@ class TaskDetailFragment : Fragment() {
 
         //var currentTask: Task? = null
 
-        Thread {
+        scope.launch {
             currentTask = db.taskDao().getTaskById(taskId)
-        }.start()
+        }
         Thread.sleep(10)
 
         init()
@@ -69,10 +75,17 @@ class TaskDetailFragment : Fragment() {
                 val description = etTaskDescription.text.toString()
                 val date = etDate.text.toString()
                 if (!name.isNullOrEmpty() && !date.isNullOrEmpty()) {
-                    var newTasks = Task(currentTask?.id ?: 0, name, description, date, currentTask?.latitude, currentTask?.longitude)
-                    Thread {
+                    var newTasks = Task(
+                        currentTask?.id ?: 0,
+                        name,
+                        description,
+                        date,
+                        currentTask?.latitude,
+                        currentTask?.longitude
+                    )
+                    scope.launch {
                         db.taskDao().updateTask(newTasks)
-                    }.start()
+                    }
                     Thread.sleep(100)
                     findNavController().popBackStack()
                     Snackbar.make(it, "Сохранено", Snackbar.LENGTH_LONG)
