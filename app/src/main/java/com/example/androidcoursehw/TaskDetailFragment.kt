@@ -1,53 +1,45 @@
 package com.example.androidcoursehw
 
-import android.content.Context
 import android.os.Bundle
-import android.text.InputType
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.example.androidcoursehw.databinding.FragmentNewTaskBinding
+import com.example.androidcoursehw.databinding.FragmentTaskDetailBinding
+import com.example.androidcoursehw.databinding.FragmentTasksBinding
 import com.example.androidcoursehw.model.AppDatabase
-import com.example.androidcoursehw.model.dao.TaskDao
 import com.example.androidcoursehw.model.entity.Task
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_new_task.*
-import kotlinx.android.synthetic.main.item_task.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+class TaskDetailFragment : Fragment() {
 
-class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
+    private lateinit var binding: FragmentTaskDetailBinding
 
-    private lateinit var binding: FragmentNewTaskBinding
+    private var taskId: Int = -1
 
     private lateinit var db: AppDatabase
 
-    private lateinit var navController: NavController
+    private var currentTask: Task? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         db = AppDatabase(requireContext())
-        navController = findNavController()
+
+        arguments?.let {
+            taskId = it.getInt("TASK_ID")
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentNewTaskBinding.inflate(inflater, container, false)?.let {
+    ): View? = FragmentTaskDetailBinding.inflate(inflater, container, false)?.let {
         binding = it
         it.root
     }
@@ -55,28 +47,35 @@ class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //var currentTask: Task? = null
+
+        Thread {
+            currentTask = db.taskDao().getTaskById(taskId)
+        }.start()
+        Thread.sleep(10)
+
+        init()
 
         with(binding) {
-            btnAddTask.setOnClickListener {
-                val name = tiTaskName.text.toString()
-                val description = tiTaskDescription.text.toString()
+            btnEdit.setOnClickListener {
+                etTaskName.isEnabled = true
+                etTaskDescription.isEnabled = true
+                etDate.isEnabled = true
+                btnSaveChanges.isEnabled = true
+            }
+
+            btnSaveChanges.setOnClickListener {
+                val name = etTaskName.text.toString()
+                val description = etTaskDescription.text.toString()
                 val date = etDate.text.toString()
                 if (!name.isNullOrEmpty() && !date.isNullOrEmpty()) {
-                    var tasks: ArrayList<Task> = arrayListOf()
+                    var newTasks = Task(currentTask?.id ?: 0, name, description, date)
                     Thread {
-                        tasks.addAll(db.taskDao().getTaks())
-                        var idLast = 0
-                        tasks.lastOrNull()?.let {
-                            idLast = it.id
-                        }
-                        if (idLast != 0)
-                            idLast += 1
-                        db.taskDao().addTask(Task(idLast, name, description, date))
+                        db.taskDao().updateTask(newTasks)
                     }.start()
                     Thread.sleep(100)
-                    navController.popBackStack()
-                } else {
-                    Snackbar.make(it, "Введите название и дату", Snackbar.LENGTH_LONG)
+                    findNavController().popBackStack()
+                    Snackbar.make(it, "Сохранено", Snackbar.LENGTH_LONG)
                         .show()
                 }
             }
@@ -94,6 +93,14 @@ class NewTaskFragment : Fragment(), CoroutineScope by MainScope() {
                     etDate.setText(formatter.format(calendar.time))
                 }
             }
+        }
+    }
+
+    private fun init() {
+        with(binding) {
+            etTaskName.setText(currentTask?.name)
+            etTaskDescription.setText(currentTask?.description)
+            etDate.setText(currentTask?.date)
         }
     }
 }

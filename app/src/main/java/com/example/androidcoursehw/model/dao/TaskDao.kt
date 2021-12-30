@@ -16,4 +16,10 @@ public interface TaskDao{
 
     @Delete
     fun removeTask(task: Task)
+
+    @Query("DELETE FROM tasks WHERE 1 = 1")
+    fun clear()
+
+    @Update
+    fun updateTask(newTask: Task)
 }

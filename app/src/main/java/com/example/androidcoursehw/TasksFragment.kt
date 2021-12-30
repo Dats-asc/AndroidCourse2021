@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -19,6 +20,7 @@ import com.example.androidcoursehw.adapter.TaskAdapter
 import com.example.androidcoursehw.databinding.FragmentTasksBinding
 import com.example.androidcoursehw.model.AppDatabase
 import com.example.androidcoursehw.model.entity.Task
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.w3c.dom.Text
 import java.util.jar.Attributes
 
@@ -40,7 +42,7 @@ class TasksFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setHasOptionsMenu(true)
         navController = findNavController()
 
         db = AppDatabase(requireContext())
@@ -65,14 +67,6 @@ class TasksFragment : Fragment() {
 
         tvFirstMessage = view.findViewById<TextView>(R.id.tvFirstMessage)
 
-//        if (databaseEmpty){
-//            tvFirstMessage = TextView(this.context, null, R.style.FirstMessageStyle).apply {
-//                text = "Для начала работы создайте первую цель"
-//                setTextAppearance(R.style.FirstMessageStyle)
-//            }
-//            binding.rootLayout.addView(tvFirstMessage)
-//        }
-
         var tasks: ArrayList<Task> = arrayListOf()
         Thread {
             tasks.addAll(db.taskDao().getTaks())
@@ -81,12 +75,12 @@ class TasksFragment : Fragment() {
         taskAdapter = TaskAdapter(
             tasks,
             {
-                //openItem(it)
+                openTaskDetail(it)
             },
             {
                 deleteButtonClickListener(it, tasks)
             }
-            )
+        )
 
         getView()?.findViewById<RecyclerView>(R.id.rv_tasks)?.run {
             adapter = taskAdapter
@@ -97,34 +91,66 @@ class TasksFragment : Fragment() {
                 navController.navigate(R.id.action_tasksFragment_to_newTaskFragment)
             }
 
-            if(tasks.isEmpty()){
+            if (tasks.isEmpty()) {
                 tvFirstMessage.visibility = View.VISIBLE
-            } else{
+            } else {
                 tvFirstMessage.visibility = View.GONE
             }
             Log.e("is empty: ", tasks.isEmpty().toString())
         }
     }
 
-    private fun deleteButtonClickListener(itemId: Int, tasks: ArrayList<Task>){
-        var newList:ArrayList<Task> = arrayListOf()
+    private fun deleteButtonClickListener(itemId: Int, tasks: ArrayList<Task>) {
+        var newList: ArrayList<Task> = arrayListOf()
         var taskForRemove: Task? = null
         newList.addAll(tasks)
-            newList.forEach{ task ->
-                if (task.id == itemId){
-                    taskForRemove = task
-                    return@forEach
-                }
+        newList.forEach { task ->
+            if (task.id == itemId) {
+                taskForRemove = task
+                return@forEach
             }
+        }
         newList.remove(taskForRemove)
-        if(newList.isEmpty()){
+        if (newList.isEmpty()) {
             binding.tvFirstMessage.visibility = View.VISIBLE
         }
         taskAdapter?.updateData(newList)
-        Thread{
+        Thread {
             taskForRemove?.let {
                 db.taskDao().removeTask(it)
             }
         }.start()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        showAlert()
+        return true
+    }
+
+    private fun showAlert(){
+        var userConfirm = false
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Предупреждение")
+            .setMessage("Вы уверены что хотите удалить все задачи?")
+            .setNeutralButton("Отмена") { dialog, which ->
+            }
+            .setPositiveButton("Подтвердить") { dialog, which ->
+                userConfirm = true
+                taskAdapter?.updateData(arrayListOf())
+                binding.tvFirstMessage.visibility = View.VISIBLE
+
+                Thread {
+                    db.taskDao().clear()
+                }.start()
+            }
+            .show()
+    }
+
+    private fun openTaskDetail(taskId: Int){
+        var navController = findNavController()
+        var bundle = Bundle().apply {
+            putInt("TASK_ID", taskId)
+        }
+        navController.navigate(R.id.action_tasksFragment_to_taskDetailFragment, bundle)
     }
 }
