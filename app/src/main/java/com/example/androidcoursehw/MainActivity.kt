@@ -2,11 +2,9 @@ package com.example.androidcoursehw
 
 import android.graphics.Color
 import android.graphics.PorterDuff
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcoursehw.databinding.ActivityMainBinding
-import java.util.*
 
 private const val TAG_HOME = "tag_home"
 private const val TAG_DASHBOARD = "tag_dashboard"
@@ -30,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             commit()
             binding.ivHome.setColorFilter(Color.parseColor("#FF6200EE"), PorterDuff.Mode.SRC_IN)
             binding.tvHome.setTextColor(Color.parseColor("#FF6200EE"))
+            // test
 
         }
 
